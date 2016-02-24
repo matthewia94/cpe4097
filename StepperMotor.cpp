@@ -38,8 +38,9 @@ void StepperMotor::step(int num_steps)
     for(int i=0; i < num_steps; i++)
     {
         clock.setval_gpio("1");
-        sleep(.001);
+        sleep(5);
         clock.setval_gpio("0");
-        sleep(.001);
+        sleep(1);
     }
+    offset += num_steps;
 }
