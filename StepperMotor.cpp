@@ -46,11 +46,14 @@ StepperMotor::~StepperMotor()
 
 void StepperMotor::step(int num_steps)
 {
+    // Choose the direction for the motor
     if(num_steps < 0)
-    {
         ccw.setval_gpio("0");
-        sleep(.001);
-    }
+    else
+        ccw.setval_gpio("1");
+    sleep(.001);
+
+    // Step the correct number of times
     for(int i=0; i < num_steps; i++)
     {
         clock.setval_gpio("1");
