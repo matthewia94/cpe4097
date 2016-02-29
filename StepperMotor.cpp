@@ -20,15 +20,18 @@ StepperMotor::StepperMotor(int clock_pin, int ccw_pin, int reset_pin, int en_pin
     en.setdir_gpio("out");
     en.setval_gpio("1");
 
+    // Reset the motor controller
     reset.export_gpio();
     reset.setdir_gpio("out");
     reset.setval_gpio("1");
     sleep(1);
     reset.setval_gpio("0");
-    
+   
+    // Initialize the clock pin
     clock.export_gpio();
     clock.setdir_gpio("out");
     
+    // Initialize the ccw pin
     ccw.export_gpio();
     clock.setdir_gpio("out");
 }
@@ -43,6 +46,11 @@ StepperMotor::~StepperMotor()
 
 void StepperMotor::step(int num_steps)
 {
+    if(num_steps < 0)
+    {
+        ccw.setval_gpio("0");
+        sleep(.001);
+    }
     for(int i=0; i < num_steps; i++)
     {
         clock.setval_gpio("1");
