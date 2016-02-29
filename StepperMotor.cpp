@@ -33,6 +33,14 @@ StepperMotor::StepperMotor(int clock_pin, int ccw_pin, int reset_pin, int en_pin
     clock.setdir_gpio("out");
 }
 
+StepperMotor::~StepperMotor()
+{
+	clock.unexport_gpio();
+	ccw.unexport_gpio();
+	reset.unexport_gpio();
+	en.unexport_gpio();
+}
+
 void StepperMotor::step(int num_steps)
 {
     for(int i=0; i < num_steps; i++)
