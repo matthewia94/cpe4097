@@ -14,10 +14,11 @@ class StepperMotor
 {
     public:
         StepperMotor(int clock_pin, int ccw_pin, int reset_pin, int en_pin);
+        ~StepperMotor();
         void step(int num_steps);
 
     private:
-        int offset; 
+        int offset;         // The offset of the stepper motor from 0, 0 is the starting position 
         GPIOClass clock;    // The clock pin is used to make the motor step once
         GPIOClass ccw;      // The ccw pin sets the direction of the motor 
         GPIOClass reset;    // The reset pin resets the Motor driver IC
