@@ -57,7 +57,7 @@ void StepperMotor::step(int num_steps)
 	// motor will return to starting position
 	if((offset + num_steps) < 0) 
 	{
-		numsteps = -offset;
+		num_steps = -offset;
 		offset = 0;
 	}	
 	else
