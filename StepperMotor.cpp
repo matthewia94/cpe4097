@@ -52,7 +52,17 @@ void StepperMotor::step(int num_steps)
     else
         ccw.setval_gpio("1");
     sleep(.001);
-
+	
+	// If we try to move the motor too far in the reverse direction,
+	// motor will return to starting position
+	if((offset + num_steps) < 0) 
+	{
+		numsteps = -offset;
+		offset = 0;
+	}	
+	else
+		offset += num_steps;
+	
     // Step the correct number of times
     for(int i=0; i < num_steps; i++)
     {
@@ -61,5 +71,5 @@ void StepperMotor::step(int num_steps)
         clock.setval_gpio("0");
         sleep(1);
     }
-    offset += num_steps;
+
 }
