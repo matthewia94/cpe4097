@@ -11,6 +11,11 @@
 
 int main ()
 {
+    int a;
     StepperMotor s(4, 5, 6, 13);
-    s.step(50);
+    while(true)
+    {
+        //std::cin >> a;
+        s.step(-1);
+    }
 }

@@ -8,6 +8,8 @@
 #define STEPPERMOTOR_H
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <iostream>
 #include "GPIOClass.h"
 
 class StepperMotor
