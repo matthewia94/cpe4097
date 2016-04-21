@@ -11,7 +11,7 @@ class Actuator
 		Actuator(int pwm_pin,int direc_pin); //Constructor
 		~Actuator(); //Destructor
 		void ActMove();
-		void Set(int freq,int duty,bool direc);
+		void Set(int freq,int duty,bool direct);
 	private:
 		GPIOClass pwm; //GPIO pwm pin, signal input
 		GPIOClass direc; //GPIO direction pin, low for CW motion, high for CCW motion
