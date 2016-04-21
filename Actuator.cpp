@@ -26,7 +26,7 @@ void Actuator::ActMove() //Moves actuator
 	nanosleep(&tim2,&dn);*/
 }
 
-void Actuator::ActMove() //Stops actuator
+void Actuator::ActStop() //Stops actuator
 {
 	pwm.setval_gpio("0");
 }
