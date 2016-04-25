@@ -10,15 +10,12 @@ class Actuator
 	public:
 		Actuator(int pwm_pin,int direc_pin); //Constructor
 		~Actuator(); //Destructor
-		void ActMove();
-		void ActStop();
-		void Set(int freq,int duty,bool direct);
+		void ActMove(); //Moves actuator by outputting 3.3 V to GPIO PWM pin
+		void ActStop(); //Stops actuator by setting GPIO PWM pin to 0 V
+		void Set(bool direct); //Changes direction pin to 0 V for cw motion or 3.3 V for ccw motion
 	private:
 		GPIOClass pwm; //GPIO pwm pin, signal input
 		GPIOClass direc; //GPIO direction pin, low for CW motion, high for CCW motion
-		struct timespec tim1; //PWM On time
-		struct timespec tim2; //PWM Off time
-		struct timespec dn; //Dummy
 };
 
 #endif

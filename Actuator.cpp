@@ -21,9 +21,6 @@ Actuator::~Actuator()
 void Actuator::ActMove() //Moves actuator
 {
 	pwm.setval_gpio("1");
-	/*nanosleep(&tim1,&dn);
-    pwm.setval_gpio("0");
-	nanosleep(&tim2,&dn);*/
 }
 
 void Actuator::ActStop() //Stops actuator
@@ -31,13 +28,8 @@ void Actuator::ActStop() //Stops actuator
 	pwm.setval_gpio("0");
 }
 
-void Actuator::Set(int freq,int duty,bool direct)//PWM signal frequency, PWM signal duty cycle (0-100%), direction (false for cw, true for ccw) 
+void Actuator::Set(bool direct)//direction (false for cw, true for ccw) 
 {
-	float period = 1/freq;
-	tim1.tv_sec = 0;
-	tim2.tv_sec = 0;
-	tim1.tv_nsec = (duty/100)*period*1000000000;
-	tim2.tv_nsec = (1-(duty/100))*period*1000000000;
 	if(direct == true)
 		direc.setval_gpio("1");
 	else
