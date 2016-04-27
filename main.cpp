@@ -12,6 +12,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "StepperMotor.h"
 #include "client.h"
+#include "Actuator.h"
 
 using std::cout;
 using std::endl;
@@ -38,10 +39,20 @@ int main(int argc, char** argv)
     }
 
     int a;
+	double Freq = 50.0;
     StepperMotor s(4, 5, 6, 13);
-//    while(true)
-//    {
-//        //std::cin >> a;
-//        s.step(-1);
-//    }
+	rpiPWM1 Stepper(300.0, 256, 0.0, rpiPWM1::MSMODE); //GPIO18, pin 12
+    // initialize PWM1 output to 700Hz 8-bit resolution 0% Duty Cycle & PWM mode is MSMODE
+	Actuator Gas(24,23);
+	Actuator Brake(18,15);
+	Gas.Set(false);
+	Stepper.setDutyCycle(50.0);
+    while(true)
+    {
+		Stepper.setFrequency(Freq++); //Increases frequency by one every 1/16 second
+		usleep(62500);
+		//Gas.ActMove();
+		//std::cin >> a;
+        //s.step(-1);
+    }
 }
