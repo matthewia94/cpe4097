@@ -9,7 +9,6 @@ Joystick::Joystick()
     active = false;
     joystick_fd = 0;
     joystick_ev = new js_event();
-    joystick_st = new joystick_state();
     joystick_fd = open(JOYSTICK_DEV, O_RDONLY | O_NONBLOCK);
     if(joystick_fd > 0)
     {
@@ -18,14 +17,18 @@ Joystick::Joystick()
         ioctl(joystick_fd, JSIOCGAXES, &axes);
         ioctl(joystick_fd, JSIOCGBUTTONS, &buttons);
 
-        std::cout << "   Name: " << name << std::endl;
-        std::cout << "Version: " << version << std::endl;
-        std::cout << "   Axes: " << (int)axes << std::endl;
-        std::cout << "Buttons: " << (int)buttons << std::endl;
-        joystick_st->axis.reserve(axes);
+        joystick_st.axis.reserve(axes);
     }
-    joystick_st->axis.reserve(axes);
-    joystick_st->button.reserve(buttons);
+    joystick_st.num_buttons = buttons;
+    joystick_st.num_axes = axes;
+    for(int i = 0; i < axes; i++)
+    {
+        joystick_st.axis.push_back(0);
+    }
+    for(int i = 0; i < buttons; i++)
+    {
+        joystick_st.button.push_back(0);
+    }
     active = true;
     pthread_create(&thread, 0, &Joystick::loop, this);
 }
@@ -39,7 +42,6 @@ Joystick::~Joystick()
         close(joystick_fd);
     }
 
-    delete joystick_st;
     delete joystick_ev;
     joystick_fd = 0;
 }
@@ -60,20 +62,18 @@ void Joystick::readEv()
         joystick_ev->type &= ~JS_EVENT_INIT;
         if(joystick_ev->type & JS_EVENT_BUTTON)
         {
-            joystick_st->button[joystick_ev->number] = joystick_ev->value;
-            std::cout << "Button: " << joystick_ev->number << " Value: " << joystick_ev->value << std::endl;
+            joystick_st.button[joystick_ev->number] = joystick_ev->value;
         }
         if(joystick_ev->type & JS_EVENT_AXIS)
         {
-            joystick_st->axis[joystick_ev->number] = joystick_ev->value;
-            std::cout << "Axis: " << joystick_ev->number << " Value: " << joystick_ev->value << std::endl;
+            joystick_st.axis[joystick_ev->number] = joystick_ev->value;
         }
     }
 }
 
 bool Joystick::buttonPressed(int n)
 {
-    return n > -1 && n < buttons ? joystick_st->button[n] : 0;
+    return n > -1 && n < buttons ? joystick_st.button[n] : 0;
 }
 
 Joystick::joystick_position Joystick::joystickPosition(int n)
@@ -83,7 +83,7 @@ Joystick::joystick_position Joystick::joystickPosition(int n)
     if(n > -1 && n < buttons)
     {
         int i0 = n*2, i1 = n*2+1;
-        float x0 = joystick_st->axis[10]/32767.0f, y0 = -joystick_st->axis[i1]/32767.0f;
+        float x0 = joystick_st.axis[10]/32767.0f, y0 = -joystick_st.axis[i1]/32767.0f;
         float x = x0 * sqrt(1 - pow(y0, 2)/2.0f), y = y0 * sqrt(1 - pow(x0, 2)/2.0f);
 
         pos.x = x0;

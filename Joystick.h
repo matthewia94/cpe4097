@@ -13,45 +13,59 @@
 #include <cmath>
 #include <linux/joystick.h>
 #include <fcntl.h>
+#include <boost/serialization/vector.hpp>
 
 #define JOYSTICK_DEV "/dev/input/js0"
 
 class Joystick
 {
-private:
-    //Struct to store the state of a joystick
-    struct joystick_state
-    {
-        std::vector<signed short> button;
-        std::vector<signed short> axis;
-    };
+    private:
+        //State to store the position of the actual analog sticks
+        struct joystick_position
+        {
+            float theta;
+            float r;
+            float x;
+            float y;
+        };
 
-    //State to store the position of the actual analog sticks
-    struct joystick_position
-    {
-        float theta;
-        float r;
-        float x;
-        float y;
-    };
+        pthread_t thread;
+        bool active;
+        int joystick_fd;
+        js_event* joystick_ev;
+        __u32 version;
 
-    pthread_t thread;
-    bool active;
-    int joystick_fd;
-    js_event* joystick_ev;
-    joystick_state *joystick_st;
-    __u32 version;
-    __u8 axes;
-    __u8 buttons;
-    char name[256];
+        char name[256];
 
-public:
-    Joystick();
-    ~Joystick();
-    static void* loop(void* obj);
-    void readEv();
-    joystick_position joystickPosition(int n);
-    bool buttonPressed(int n);
+    public:
+        //Struct to store the state of a joystick
+        struct joystick_state
+        {
+            friend class boost::serialization::access;
+            int num_buttons, num_axes;
+            std::vector<signed short> button;
+            std::vector<signed short> axis;
+
+            template <typename Archive>
+            void serialize(Archive& ar, const unsigned int version)
+            {
+                ar & num_axes;
+                ar & axis;
+                ar & num_buttons;
+                ar & button;
+            }
+        };
+
+        __u8 axes;
+        __u8 buttons;
+        joystick_state joystick_st;
+
+        Joystick();
+        ~Joystick();
+        static void* loop(void* obj);
+        void readEv();
+        joystick_position joystickPosition(int n);
+        bool buttonPressed(int n);
 };
 
 
