@@ -74,3 +74,15 @@ void StepperMotor::step(int num_steps)
     }
 
 }
+
+void StepperMotor::run(int speed)
+{
+    if(speed > 0)
+        ccw.setval_gpio("0");
+    else
+        ccw.setval_gpio("1");
+
+
+    clock.setval_gpio("0");
+    clock.setval_gpio("1");
+}

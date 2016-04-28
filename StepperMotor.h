@@ -18,6 +18,7 @@ class StepperMotor
         StepperMotor(int clock_pin, int ccw_pin, int reset_pin, int en_pin);
         ~StepperMotor();
         void step(int num_steps);
+        void run(int speed);
 
     private:
         int offset;         // The offset of the stepper motor from 0, 0 is the starting position 

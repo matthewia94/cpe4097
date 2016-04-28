@@ -18,17 +18,17 @@ Actuator::~Actuator()
 	direc.unexport_gpio();
 }
 
-void Actuator::ActMove() //Moves actuator
+void Actuator::actMove() //Moves actuator
 {
 	pwm.setval_gpio("1");
 }
 
-void Actuator::ActStop() //Stops actuator
+void Actuator::actStop() //Stops actuator
 {
 	pwm.setval_gpio("0");
 }
 
-void Actuator::Set(bool direct)//direction (false for cw, true for ccw) 
+void Actuator::set(bool direct)//direction (false for cw, true for ccw)
 {
 	if(direct == true)
 		direc.setval_gpio("1");

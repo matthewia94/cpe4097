@@ -12,6 +12,7 @@
 #include "connection.hpp"
 #include <boost/serialization/vector.hpp>
 #include "Joystick.h"
+#include "Lawnmower.h"
 
 class Client
 {
@@ -31,6 +32,8 @@ class Client
         connection c;
 
         Joystick::joystick_state joystick;
+
+        Lawnmower mower;
 };
 
 

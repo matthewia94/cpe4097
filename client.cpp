@@ -36,9 +36,6 @@ void Client::handle_connect(const boost::system::error_code& e,
     }
     else
     {
-        // An error occurred. Log it and return. Since we are not starting a new
-        // operation the io_service will run out of work to do and the client will
-        // exit.
         std::cerr << e.message() << std::endl;
     }
 }
@@ -58,6 +55,8 @@ void Client::handle_read(const boost::system::error_code& e)
         {
             std::cout << "Button " << j << " : " << joystick.button[j] << std::endl;
         }
+
+        mower.update_state(joystick);
 
         timeout.expires_from_now(boost::posix_time::seconds(1));
         timeout.async_wait(boost::bind(&Client::read, this, boost::asio::placeholders::error));
