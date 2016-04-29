@@ -17,6 +17,7 @@ class Lawnmower
         Actuator gas;
         Actuator brake;
         bool enabled;
+        GPIOClass stop_relay;
 
     public:
         Lawnmower();

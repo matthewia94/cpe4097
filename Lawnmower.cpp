@@ -4,8 +4,10 @@
 
 #include "Lawnmower.h"
 
-Lawnmower::Lawnmower() : s(4, 5, 6, 13), gas(23, 18), brake(24, 25)
+Lawnmower::Lawnmower() : s(18, 23, 24, 25), gas(22, 27), brake(17, 4), stop_relay("12")
 {
+    stop_relay.export_gpio();
+    stop_relay.setdir_gpio("out");
     rpiPWM1 Stepper(300.0, 256, 0.0, rpiPWM1::MSMODE); //GPIO18, pin 12
     Stepper.setDutyCycle(50.0);
     enabled = false;
@@ -21,6 +23,7 @@ void Lawnmower::update_state(Joystick::joystick_state js)
     else if(js.button[0])  // A turns on
     {
         enabled = true;
+        stop_relay.setval_gpio("1");
     }
 
     if(enabled)
@@ -52,11 +55,12 @@ void Lawnmower::update_state(Joystick::joystick_state js)
     }
     else
     {
-
+        e_stop();
     }
 }
 
 void Lawnmower::e_stop()
 {
     // Emergency stop
+    stop_relay.setval_gpio("0");
 }
