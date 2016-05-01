@@ -63,7 +63,7 @@ void StepperMotor::step(int num_steps)
 	}	
 	else
 		offset += num_steps;
-	
+	*/	
     // Step the correct number of times
     for(int i=0; i < abs(num_steps); i++)
     {
@@ -71,7 +71,7 @@ void StepperMotor::step(int num_steps)
         sleep(1);
         clock.setval_gpio("1");
         sleep(1);
-    }*/
+    }
 
 }
 
