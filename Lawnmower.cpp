@@ -8,8 +8,6 @@ Lawnmower::Lawnmower() : s(18, 23, 24, 25), gas(22, 27), brake(17, 4), stop_rela
 {
     stop_relay.export_gpio();
     stop_relay.setdir_gpio("out");
-    rpiPWM1 Stepper(300.0, 256, 0.0, rpiPWM1::MSMODE); //GPIO18, pin 12
-    Stepper.setDutyCycle(50.0);
     enabled = false;
 }
 
@@ -30,11 +28,11 @@ void Lawnmower::update_state(Joystick::joystick_state js)
     {
         if(js.axis[0] < -10000)
         {
-            s.step(-50);
+            s.step(-5);
         }
         else if(js.axis[0] > 10000)
         {
-            s.step(50);
+            s.step(5);
         }
         if(js.axis[5] > 0)
         {

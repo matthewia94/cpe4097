@@ -34,7 +34,7 @@ StepperMotor::StepperMotor(int clock_pin, int ccw_pin, int reset_pin, int en_pin
     
     // Initialize the ccw pin
     ccw.export_gpio();
-    clock.setdir_gpio("out");
+    ccw.setdir_gpio("out");
 }
 
 StepperMotor::~StepperMotor()

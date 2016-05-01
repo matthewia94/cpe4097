@@ -45,16 +45,16 @@ void Client::handle_read(const boost::system::error_code& e)
     if (!e)
     {
         // Print out the data that was received.
-        std::cout << "  Axes: " << joystick.num_axes << "\n";
-        for(std::size_t j = 0; j < joystick.num_axes; j++)
-        {
-            std::cout << "Axis " << j << " : " << joystick.axis[j] << std::endl;
-        }
-        std::cout << "  Buttons: " << joystick.num_buttons << "\n";
-        for(std::size_t j = 0; j < joystick.num_buttons; j++)
-        {
-            std::cout << "Button " << j << " : " << joystick.button[j] << std::endl;
-        }
+//        std::cout << "  Axes: " << joystick.num_axes << "\n";
+//        for(std::size_t j = 0; j < joystick.num_axes; j++)
+//        {
+//            std::cout << "Axis " << j << " : " << joystick.axis[j] << std::endl;
+//        }
+//        std::cout << "  Buttons: " << joystick.num_buttons << "\n";
+//        for(std::size_t j = 0; j < joystick.num_buttons; j++)
+//        {
+//            std::cout << "Button " << j << " : " << joystick.button[j] << std::endl;
+//        }
 
         mower.update_state(joystick);
 

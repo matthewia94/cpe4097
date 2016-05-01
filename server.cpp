@@ -26,7 +26,7 @@ Server::~Server()
 
 void Server::handle_write(const boost::system::error_code& e, connection_ptr conn)
 {
-    timer.expires_from_now(boost::posix_time::seconds(1));
+    timer.expires_from_now(boost::posix_time::seconds(.1));
     timer.async_wait(boost::bind(&Server::send, this, boost::asio::placeholders::error));
 }
 
