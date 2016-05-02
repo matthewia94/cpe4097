@@ -48,30 +48,32 @@ StepperMotor::~StepperMotor()
 void StepperMotor::step(int num_steps)
 {
     // Choose the direction for the motor
+    struct timespec tv,tv2;
+	tv.tv_sec = 0;
+	tv.tv_nsec = 1020000;
     if(num_steps < 0)
         ccw.setval_gpio("0");
     else
         ccw.setval_gpio("1");
     sleep(.001);
 	
-	/*// If we try to move the motor too far in the reverse direction,
+	// If we try to move the motor too far in the reverse direction,
 	// motor will return to starting position
-	if((offset + num_steps) < 0) 
-	{
-		num_steps = -offset;
-		offset = 0;
-	}	
-	else
-		offset += num_steps;
+	//if((offset + num_steps) < 0) 
+	//{
+//		num_steps = -offset;
+//		offset = 0;
+//	}	
+//	else
+//		offset += num_steps;
 	
     // Step the correct number of times
     for(int i=0; i < abs(num_steps); i++)
     {
         clock.setval_gpio("0");
-        sleep(1);
+        nanosleep(&tv,&tv2);
         clock.setval_gpio("1");
-        sleep(1);
-    }*/
+    }
 
 }
 

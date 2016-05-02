@@ -53,12 +53,12 @@ void Client::handle_read(const boost::system::error_code& e)
 //        std::cout << "  Buttons: " << joystick.num_buttons << "\n";
 //        for(std::size_t j = 0; j < joystick.num_buttons; j++)
 //        {
-//            std::cout << "Button " << j << " : " << joystick.button[j] << std::endl;
+//          std::cout << "Button " << j << " : " << joystick.button[j] << std::endl;
 //        }
 
         mower.update_state(joystick);
 
-        timeout.expires_from_now(boost::posix_time::seconds(1));
+        timeout.expires_from_now(boost::posix_time::seconds(.5));
         timeout.async_wait(boost::bind(&Client::read, this, boost::asio::placeholders::error));
     }
     else

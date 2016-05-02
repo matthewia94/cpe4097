@@ -22,30 +22,43 @@ void Lawnmower::update_state(Joystick::joystick_state js)
     {
         enabled = true;
         stop_relay.setval_gpio("1");
+	sleep(.05);
     }
 
     if(enabled)
     {
         if(js.axis[0] < -10000)
         {
-            s.step(-5);
+            s.step(-100);
         }
         else if(js.axis[0] > 10000)
         {
-            s.step(5);
+            s.step(100);
         }
-        if(js.axis[5] > 0)
+	if(js.button[5])
+	{
+            gas.set(1);
+            gas.actMove();
+	}
+        else if(js.axis[5] > 500)
         {
+	    gas.set(0);
             gas.actMove();
         }
         else
         {
             gas.actStop();
         }
-        if(js.axis[2] > 0)
-        {
+	if(js.button[4])
+	{
+            brake.set(1);
             brake.actMove();
-        }
+	}
+        else if(js.axis[2] > 500)
+        {
+	    brake.set(0);
+            brake.actMove();
+        } 
         else
         {
             brake.actStop();
@@ -61,4 +74,5 @@ void Lawnmower::e_stop()
 {
     // Emergency stop
     stop_relay.setval_gpio("0");
+    sleep(.05);
 }
